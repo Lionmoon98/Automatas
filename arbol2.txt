@@ -1,0 +1,87 @@
+#include <iostream>
+#include <cstring>                                                                            
+                                                                                                
+char entrada[100];                                                                             
+char *next = entrada;  
+bool term(char token) {
+    if (*next != '\0')
+        return *next++ == token;
+    else
+        return false;
+}
+bool S(); 
+bool E(); 
+bool Ep();
+bool T(); 
+bool Tp();
+bool F();
+bool F1();
+bool F2();
+bool F3();
+
+
+
+
+bool S() {
+    return E();
+}   
+
+    
+bool E() {
+    
+    return T() &&  Ep() ;
+}   
+
+bool T() {
+    return F()  && Tp ();
+    //term('a') && term('b');
+} 
+
+bool Tp(){
+    char* save = next;
+    return term('*') && F() && Tp() || (next = save, term('/'))  && F() && Tp();
+    
+     
+}
+
+bool Ep(){
+    
+     char* save = next;
+     std::cout << "entro";
+     return term('+') && T() && Ep() ||(next = save, term('-')) && T() && Ep();
+     std::cout << "entro";
+    
+}
+
+bool F(){
+    
+    char* save = next;
+    return F1() ||  (next = save, F2()) ||  (next = save, F3());
+    
+}
+
+bool F1(){
+    
+    return term('(') && E() && term(')');
+}
+
+bool F2(){
+   // char* save = next;
+    return term('a') || term('b') || term('c') ||term('d');
+}
+
+bool F3() {
+    return term('1') || term('2') || term('3') || term('4') || term('5')  ;
+}   
+
+int main() {
+    strcpy(entrada,"a+b*c-5+(35/15)");
+    
+    if (S() && *next == '\0') {
+        std::cout << "aceptada";
+    }
+    else
+        std::cout << "no aceptada";
+}
+
+
